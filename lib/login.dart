@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:buyinglist/widgets/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +83,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    var completer = new Completer<UserCredential>();
+    if (googleUser == null) return completer.future;
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;

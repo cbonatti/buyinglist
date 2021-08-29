@@ -1,5 +1,8 @@
+import 'package:buyinglist/widgets/loading.dart';
 import 'package:buyinglist/widgets/side-menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,19 +28,19 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Listas de Compras"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('list').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Loading();
+          var data = (snapshot.data! as QuerySnapshot);
+          return ListView.builder(
+            itemExtent: 80.0,
+            itemCount: data.docs.length,
+            itemBuilder: (context, index) {
+              return Text(data.docs[index]['name']);
+            },
+          );
+        },
       ),
       drawer: SideMenuPage(widget.user),
       floatingActionButton: FloatingActionButton(

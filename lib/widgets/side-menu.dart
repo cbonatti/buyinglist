@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in/widgets.dart';
 
 import '../login.dart';
 import 'rounded-image.dart';
@@ -33,7 +31,7 @@ class SideMenuPage extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: RoundedImage(imagePath: currentUser.photoURL),
+            leading: RoundedImage(imagePath: currentUser.photoURL ?? ""),
             title: Text(currentUser.displayName ?? ''),
             subtitle: Text(currentUser.email ?? ''),
           ),
