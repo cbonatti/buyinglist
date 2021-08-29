@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.user}) : super(key: key);
@@ -14,12 +15,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    setState(() {});
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
+    var activeText = Theme.of(context).textTheme.headline5;
+
+    var inactiveText = Theme.of(context)
+        .textTheme
+        .headline5!
+        .copyWith(color: Colors.grey.shade400);
+
+    var detailText = Theme.of(context)
+        .textTheme
+        .subtitle2!
+        .copyWith(color: Colors.grey.shade400);
+
+    return ListTile(
+      title: Row(
+        children: [
+          Column(
+            children: [
+              Text(
+                document['name'],
+                style: document['status'] == 1 ? activeText : inactiveText,
+              ),
+              Text(
+                "Criado em: ${DateFormat('dd/MM/yyyy – kk:mm').format(document['date'].toDate())}",
+                style: detailText,
+              ),
+            ],
+          ),
+        ],
+      ),
+      onTap: () {
+        print("vai pokebola");
+      },
+    );
   }
 
   @override
@@ -37,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             itemExtent: 80.0,
             itemCount: data.docs.length,
             itemBuilder: (context, index) {
-              return Text(data.docs[index]['name']);
+              return _buildListItem(context, data.docs[index]);
             },
           );
         },
