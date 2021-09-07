@@ -49,6 +49,35 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      trailing: PopupMenuButton(
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              value: 'edit',
+              child: Row(
+                children: [
+                  Icon(Icons.edit, semanticLabel: "Editar"),
+                  Text("Editar")
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: 'delete',
+              child: Row(
+                children: [
+                  Icon(Icons.delete, semanticLabel: "Excluir"),
+                  Text("Excluir")
+                ],
+              ),
+            )
+          ];
+        },
+        onSelected: (String value) {
+          if (value == 'edit')
+            print('Editar');
+          else if (value == 'delete') print('Remover');
+        },
+      ),
       onTap: () {
         print("vai pokebola");
       },
