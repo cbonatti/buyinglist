@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'buyinglist.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.user}) : super(key: key);
   final User user;
@@ -15,8 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _incrementCounter() {
-    setState(() {});
+  void _goList(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BuyingListPage(user: widget.user)),
+    );
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
@@ -106,7 +112,9 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: SideMenuPage(widget.user),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          _goList(context);
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
